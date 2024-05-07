@@ -1,20 +1,17 @@
-function findItinerary(tickets) {
-  const graph = new Map();
-  for (const [from, to] of tickets) {
-    if (!graph.has(from)) graph.set(from, []);
-    graph.get(from).push(to);
+function partitionLabels(s) {
+  const last = new Array(26);
+  for (let i = 0; i < s.length; i++) {
+    last[s.charCodeAt(i) - "a".charCodeAt(0)] = i;
   }
-  for (const destinations of graph.values()) {
-    destinations.sort();
-  }
+  let anchor = 0;
+  let j = 0;
   const result = [];
-  dfs("JFK");
-  return result.reverse();
-  function dfs(from) {
-    const destinations = graph.get(from);
-    while (destinations && destinations.length) {
-      dfs(destinations.shift());
+  for (let i = 0; i < s.length; i++) {
+    j = Math.max(j, last[s.charCodeAt(i) - "a".charCodeAt(0)]);
+    if (i === j) {
+      result.push(i - anchor + 1);
+      anchor = i + 1;
     }
-    result.push(from);
   }
+  return result;
 }
